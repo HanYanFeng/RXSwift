@@ -10,20 +10,59 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class ViewController: UIViewController {
-    let disposeBag = DisposeBag()
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-         single()
-        let usernameOutlet: UITextField! = UITextField()
-        let usernameValid = usernameOutlet.rx.text.orEmpty
+class TextClass: NSObject {
+    
+    var 变化次数: Int = 0{
+        didSet{
+            self.sss.value = self.变化次数
+        }
+    }
+    
+    private lazy var sss: Variable<Int> = Variable(self.变化次数)
+    
+    override init() {
+        super.init()
         
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-   
+    var asObserveAble: Observable<Int> {
+        return self.sss.asObservable()
     }
+    
+    var asasDriver: Driver<Int> {
+        return self.sss.asDriver()
+    }
+    
+}
+
+class ViewController: UIViewController {
+    let disposeBag = DisposeBag()
+
+  /** 溉拜年一个值就改变UI
+     var textClass: TextClass!
+     
+     let reasutlabel = UILabel()
+     override func viewDidLoad() {
+     super.viewDidLoad()
+     //         single()
+     reasutlabel.textColor = UIColor.red
+     reasutlabel.frame = CGRect(x: 0, y: 100, width: 10, height: 10)
+     reasutlabel.numberOfLines = 0
+     reasutlabel.backgroundColor = UIColor.green
+     reasutlabel.font = UIFont.systemFont(ofSize: 20)
+     self.view.addSubview(reasutlabel)
+     textClass = TextClass()
+     textClass.asasDriver
+     .map{  DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.01, execute:{self.reasutlabel.sizeToFit()})
+     return "\($0 * $0)"}
+     .drive(reasutlabel.rx.text)
+     .disposed(by: disposeBag)
+     }
+     
+     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+     textClass.变化次数 += 1
+     }
+     */
     
     func single() {
         func getRepo(_ repo: String) -> Single<[String: Any]> {

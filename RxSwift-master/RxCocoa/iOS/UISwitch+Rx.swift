@@ -29,7 +29,8 @@ extension Reactive where Base: UISwitch {
         return base.rx.controlPropertyWithDefaultEvents(
             getter: { uiSwitch in
                 uiSwitch.isOn
-            }, setter: { uiSwitch, value in
+            }
+            , setter: { uiSwitch, value in
                 uiSwitch.isOn = value
             }
         )
